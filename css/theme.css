@@ -1,0 +1,362 @@
+/* ============================================================================
+   CROMA MNL — Community App theme
+   Same warm Japandi palette as the POS (polished concrete / oak / espresso /
+   amber), re-tuned for a mobile, touch-first app: top bar + bottom tab nav,
+   cards, feed, chat bubbles. Safe-area aware for notched phones.
+   ========================================================================== */
+:root{
+  --bg:#e9e3d6; --surface:#fbf8f2; --surface2:#f1ebdd; --line:#ddd3c1;
+  --text:#3a2b20; --muted:#93856f; --brand:#5b3f2c; --brand-2:#6f4e37;
+  --accent:#b5895a; --accent-soft:#e8d9c3; --green:#6f8259; --red:#b0574f;
+  --amber:#d99a4e; --blue:#3a6ea5;
+  --radius:16px; --radius-sm:12px; --shadow:0 6px 20px rgba(58,43,32,.08);
+  --shadow-lg:0 16px 40px rgba(58,43,32,.16);
+  --bar-h:60px;                 /* bottom nav height */
+  --safe-top:env(safe-area-inset-top,0px);
+  --safe-bottom:env(safe-area-inset-bottom,0px);
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html,body{height:100%}
+body{
+  background:var(--bg);color:var(--text);
+  font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
+  -webkit-font-smoothing:antialiased;overscroll-behavior-y:none;
+}
+img{max-width:100%}
+a{color:var(--accent);text-decoration:none}
+.muted{color:var(--muted)}
+.small{font-size:12px}
+.center{text-align:center}
+.hidden{display:none!important}
+.err{color:var(--red);font-size:13px;min-height:18px;text-align:center;margin-top:8px}
+.ok-text{color:var(--green)}
+.spread{display:flex;justify-content:space-between;align-items:center;gap:10px}
+.row-gap{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+
+/* ------------------------------------------------------------------ buttons */
+.btn{border:1px solid var(--line);background:var(--surface);color:var(--text);
+  padding:12px 18px;border-radius:12px;font-size:15px;font-weight:600;cursor:pointer;
+  transition:.12s;display:inline-flex;align-items:center;justify-content:center;gap:8px}
+.btn:active{transform:scale(.98)}
+.btn.primary{background:var(--brand);border-color:var(--brand);color:#faf6ee}
+.btn.primary:active{background:var(--brand-2)}
+.btn.accent{background:var(--accent);border-color:var(--accent);color:#fff}
+.btn.ghost{background:transparent}
+.btn.danger{color:var(--red);border-color:#e6cdc9}
+.btn.primary.danger{background:var(--red);border-color:var(--red);color:#fff}   /* destructive confirm */
+.btn.block{width:100%}
+.btn.big{padding:15px;font-size:16px}
+.btn.sm{padding:8px 12px;font-size:13px;border-radius:10px}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+.btn.pill{border-radius:22px}
+
+/* ------------------------------------------------------------------ inputs */
+.field{width:100%;padding:13px 14px;background:var(--surface);border:1px solid var(--line);
+  border-radius:12px;color:var(--text);font-size:15px;margin-bottom:12px;font-family:inherit}
+.field:focus{outline:none;border-color:var(--accent)}
+textarea.field{resize:vertical;min-height:88px;line-height:1.4}
+label.lbl{display:block;font-size:12px;color:var(--muted);margin:6px 2px 5px;font-weight:600}
+select.field{appearance:none;background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'><path fill='%2393856f' d='M6 8L0 0h12z'/></svg>");background-repeat:no-repeat;background-position:right 14px center}
+/* iOS Safari/WebKit renders date & time inputs with a native box that ignores width and
+   pushes its value/picker outside the field. Reset the appearance so they honour .field. */
+input[type="date"].field,input[type="time"].field,input[type="datetime-local"].field{-webkit-appearance:none;appearance:none;min-width:0;min-height:47px;display:block}
+input[type="date"].field::-webkit-date-and-time-value,input[type="time"].field::-webkit-date-and-time-value,input[type="datetime-local"].field::-webkit-date-and-time-value{text-align:left;margin:0}
+input[type="date"].field::-webkit-calendar-picker-indicator{margin:0;opacity:.6}
+
+/* ------------------------------------------------------------------ layout shell */
+#app{min-height:100%}
+.screen{display:none;min-height:100vh;min-height:100dvh}
+.screen.active{display:block}
+
+/* top bar */
+.appbar{position:sticky;top:0;z-index:20;background:var(--surface);
+  border-bottom:1px solid var(--line);padding:calc(var(--safe-top) + 10px) 16px 10px;
+  display:flex;align-items:center;gap:12px;min-height:calc(54px + var(--safe-top))}
+.appbar .title{font-size:17px;font-weight:700;letter-spacing:.3px}
+.appbar .sub{font-size:12px;color:var(--muted)}
+.appbar img.logo{height:30px;width:auto}
+.appbar .back{background:none;border:none;font-size:22px;color:var(--brand);cursor:pointer;
+  width:34px;height:34px;display:flex;align-items:center;justify-content:center;margin-left:-6px}
+.appbar .actions{margin-left:auto;display:flex;gap:8px;align-items:center}
+.iconbtn{background:var(--surface2);border:1px solid var(--line);border-radius:11px;width:38px;height:38px;
+  display:flex;align-items:center;justify-content:center;font-size:17px;cursor:pointer;color:var(--brand);position:relative}
+.iconbtn .dot{position:absolute;top:-3px;right:-3px;min-width:17px;height:17px;padding:0 4px;border-radius:9px;
+  background:var(--red);color:#fff;font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center;border:2px solid var(--surface)}
+
+/* scrollable body region above the bottom nav */
+.body{padding:16px;padding-bottom:calc(var(--bar-h) + var(--safe-bottom) + 20px)}
+.body.no-nav{padding-bottom:calc(var(--safe-bottom) + 24px)}
+
+/* bottom tab nav */
+.tabbar{position:fixed;left:0;right:0;bottom:0;z-index:20;background:var(--surface);
+  border-top:1px solid var(--line);display:flex;height:calc(var(--bar-h) + var(--safe-bottom));
+  padding-bottom:var(--safe-bottom);box-shadow:0 -4px 18px rgba(58,43,32,.06)}
+.tabbar button{flex:1;background:none;border:none;color:var(--muted);cursor:pointer;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;font-size:10.5px;font-weight:600;position:relative}
+.tabbar button .ic{font-size:21px;line-height:1}
+.tabbar button.active{color:var(--brand)}
+.tabbar button.active .ic{transform:translateY(-1px)}
+.tabbar button .badge-dot{position:absolute;top:6px;right:calc(50% - 16px);min-width:16px;height:16px;padding:0 4px;
+  border-radius:8px;background:var(--red);color:#fff;font-size:9px;font-weight:700;display:flex;align-items:center;justify-content:center}
+
+/* ------------------------------------------------------------------ cards */
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);
+  padding:16px;box-shadow:var(--shadow);margin-bottom:14px}
+.card.tap{cursor:pointer;transition:.12s}
+.card.tap:active{transform:scale(.99)}
+.card h3{font-size:16px;margin-bottom:4px}
+.section-title{font-size:13px;font-weight:700;color:var(--brand);text-transform:uppercase;
+  letter-spacing:.6px;margin:20px 2px 10px;display:flex;justify-content:space-between;align-items:center}
+.section-title:first-child{margin-top:4px}
+.section-title a{font-size:12px;font-weight:600;text-transform:none;letter-spacing:0}
+/* consistent refresh pill (↻ spins while loading) */
+.refresh-btn{display:inline-flex;align-items:center;gap:5px;background:var(--surface2);border:1px solid var(--line);
+  border-radius:999px;padding:4px 12px;font-size:12px;font-weight:600;color:var(--brand);cursor:pointer;
+  text-transform:none;letter-spacing:0;transition:background .15s,border-color .15s,transform .1s}
+.refresh-btn:hover{background:var(--accent-soft);border-color:var(--accent)}
+.refresh-btn:active{transform:scale(.95)}
+.refresh-btn .ric{font-size:14px;line-height:1;display:inline-block}
+.refresh-btn .ric.spin{animation:ricspin .6s linear infinite}
+@keyframes ricspin{to{transform:rotate(360deg)}}
+
+/* hero / greeting */
+.hero{background:linear-gradient(135deg,var(--brand),var(--accent));color:#fbf6ee;
+  border-radius:var(--radius);padding:20px;box-shadow:var(--shadow);margin-bottom:16px}
+.hero .hi{font-size:13px;opacity:.85}
+.hero .name{font-size:23px;font-weight:700;margin-top:2px}
+.hero .meta{margin-top:10px;font-size:13px;opacity:.9;display:flex;gap:16px;flex-wrap:wrap}
+
+/* chips */
+.chips{display:flex;gap:8px;flex-wrap:wrap}
+.chip{background:var(--surface);border:1px solid var(--line);color:var(--muted);
+  padding:7px 13px;border-radius:20px;font-size:13px;font-weight:600;cursor:pointer}
+.chip.on{background:var(--accent);color:#fff;border-color:var(--accent)}
+.chip.soft{background:var(--accent-soft);color:var(--brand);border-color:transparent;cursor:default}
+.badge{font-size:11px;padding:3px 9px;border-radius:20px;font-weight:700}
+.badge.green{background:#dceadb;color:var(--green)}
+.badge.amber{background:#f3e2c9;color:#a8722b}
+.badge.red{background:#f0dcd9;color:var(--red)}
+.badge.blue{background:#dbe6f0;color:var(--blue)}
+.badge.soft{background:var(--accent-soft);color:var(--brand)}
+
+/* avatars */
+.avatar{border-radius:50%;object-fit:cover;background:var(--accent-soft);flex:none;position:relative;
+  display:flex;align-items:center;justify-content:center;color:var(--brand);font-weight:700}
+.avatar img{border-radius:50%}
+.avatar.xl{width:96px;height:96px;font-size:34px}
+.avatar.lg{width:56px;height:56px;font-size:20px}
+.avatar.md{width:44px;height:44px;font-size:16px}
+.avatar.sm{width:34px;height:34px;font-size:13px}
+/* status emoji shown at the lower-right of the avatar (visible to everyone) */
+.avatar-status{position:absolute;right:-3px;bottom:-3px;background:var(--surface,#fff);border:1.5px solid var(--surface,#fff);
+  border-radius:50%;line-height:1;display:flex;align-items:center;justify-content:center;box-shadow:0 1px 3px rgba(0,0,0,.28)}
+.avatar.xl .avatar-status{font-size:20px;width:30px;height:30px}
+.avatar.lg .avatar-status{font-size:14px;width:21px;height:21px}
+.avatar.md .avatar-status{font-size:11px;width:17px;height:17px}
+.avatar.sm .avatar-status{font-size:9px;width:14px;height:14px}
+
+/* list rows */
+.list{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow)}
+.list .item{display:flex;align-items:center;gap:12px;padding:13px 15px;border-bottom:1px solid var(--line);cursor:pointer}
+.list .item:last-child{border-bottom:none}
+.list .item:active{background:var(--surface2)}
+.list .item .grow{flex:1;min-width:0}
+.list .item .grow .t{font-weight:600;font-size:15px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.list .item .grow .s{font-size:12.5px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-top:2px}
+.list .item .chev{color:var(--muted);font-size:18px}
+
+/* menu */
+.menu-cat{font-size:13px;font-weight:700;color:var(--brand);text-transform:uppercase;letter-spacing:.6px;margin:18px 2px 8px}
+.menu-item{display:flex;gap:12px;padding:12px 0;border-bottom:1px solid var(--line)}
+.menu-item:last-child{border-bottom:none}
+.menu-item .mi-grow{flex:1}
+.menu-item .mi-name{font-weight:600;font-size:15px}
+.menu-item .mi-desc{font-size:12.5px;color:var(--muted);margin-top:2px}
+.menu-item .mi-price{color:var(--accent);font-weight:700;white-space:nowrap}
+
+/* badge strip (profile — yours and other members') */
+.badge-strip{display:flex;gap:9px;overflow-x:auto;padding:2px 2px 6px;-webkit-overflow-scrolling:touch}
+.badge-strip::-webkit-scrollbar{display:none}
+.bs-item{flex:none;width:78px;background:var(--surface);border:1px solid var(--line);border-radius:14px;
+  padding:10px 6px;text-align:center;box-shadow:var(--shadow);cursor:pointer}
+.bs-item:active{background:var(--surface2)}
+.bs-ic{font-size:26px;line-height:1.1}
+.bs-t{font-size:10.5px;font-weight:700;color:var(--brand);margin-top:5px;line-height:1.2}
+
+/* order-ahead: POS-style category tabs + product tiles + order summary */
+.ord-tabs{display:flex;gap:8px;overflow-x:auto;padding:2px 2px 10px;-webkit-overflow-scrolling:touch}
+.ord-tabs::-webkit-scrollbar{display:none}
+.ord-tabs button{flex:none;background:var(--surface);border:1px solid var(--line);color:var(--muted);
+  padding:8px 15px;border-radius:20px;font-weight:600;font-size:13px;cursor:pointer;white-space:nowrap}
+.ord-tabs button.active{background:var(--accent);color:#fff;border-color:var(--accent)}
+.ord-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(105px,1fr));gap:10px}
+.ord-tile{position:relative;background:var(--surface);border:1px solid var(--line);border-radius:var(--radius-sm);
+  padding:12px 10px 10px;box-shadow:var(--shadow);cursor:pointer;transition:.12s;min-height:86px;
+  display:flex;flex-direction:column;justify-content:flex-end}
+.ord-tile:active{background:var(--surface2);transform:scale(.97)}
+.ord-tile.on{border-color:var(--accent);box-shadow:0 0 0 2px var(--accent-soft),var(--shadow)}
+.ord-tile .ot-name{font-weight:600;font-size:13px;line-height:1.25}
+.ord-tile .ot-price{color:var(--accent);font-weight:700;font-size:13px;margin-top:5px}
+.ord-tile .ot-temp{position:absolute;top:7px;left:8px;font-size:10px;background:var(--surface2);
+  border:1px solid var(--line);border-radius:20px;padding:0 6px;line-height:15px;color:var(--muted)}
+.ord-tile .ot-qty{position:absolute;top:-6px;right:-6px;min-width:22px;height:22px;border-radius:11px;
+  background:var(--accent);color:#fff;font-size:12px;font-weight:800;display:flex;align-items:center;
+  justify-content:center;padding:0 5px;box-shadow:var(--shadow)}
+.ord-sum-line{display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid var(--line)}
+.ord-sum-line:last-child{border-bottom:none}
+.ord-sum-line .osl-n{flex:1;font-size:14px;min-width:0}
+.ord-step{width:28px;height:28px;flex:none;border-radius:9px;border:1px solid var(--line);
+  background:var(--surface2);color:var(--brand);font-size:17px;font-weight:700;line-height:1;cursor:pointer}
+.ord-step.plus{background:var(--accent);color:#fff;border-color:var(--accent)}
+
+/* feed posts */
+.post{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:15px;box-shadow:var(--shadow);margin-bottom:14px}
+.post .phead{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+.post .pname{font-weight:600;font-size:14px}
+.post .ptime{font-size:11.5px;color:var(--muted)}
+.post .ptext{font-size:14.5px;line-height:1.5;white-space:pre-wrap;word-break:break-word}
+/* long posts collapse to ~5 lines so one essay can't push the rest of the feed off screen */
+.post .ptext.clamped{display:-webkit-box;-webkit-line-clamp:5;-webkit-box-orient:vertical;overflow:hidden}
+.post .ptext-more{background:none;border:none;padding:4px 0 0;color:var(--brand);font-weight:700;font-size:13px;cursor:pointer;font-family:inherit}
+.post img.pimg{width:100%;border-radius:12px;margin-top:10px}
+.post .pacts{display:flex;gap:18px;margin-top:12px;padding-top:10px;border-top:1px solid var(--line)}
+.post .pacts button{background:none;border:none;color:var(--muted);font-weight:600;font-size:13px;cursor:pointer;display:flex;align-items:center;gap:6px}
+.post .pacts button.liked{color:var(--red)}
+
+/* composer */
+.composer{display:flex;gap:10px;margin-bottom:16px}
+.composer .field{margin-bottom:0}
+
+/* chat */
+.chat-wrap{display:flex;flex-direction:column;height:calc(100vh - 55px - var(--safe-top));height:calc(100dvh - 55px - var(--safe-top))}
+.chat-scroll{flex:1;overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:8px}
+.bubble{max-width:78%;padding:10px 14px;border-radius:16px;font-size:14.5px;line-height:1.4;word-break:break-word}
+.bubble.them{background:var(--surface);border:1px solid var(--line);align-self:flex-start;border-bottom-left-radius:5px}
+.bubble.me{background:var(--brand);color:#faf6ee;align-self:flex-end;border-bottom-right-radius:5px}
+.bubble .bt{font-size:10px;opacity:.65;margin-top:4px;text-align:right}
+.chat-input{display:flex;gap:8px;padding:10px 12px calc(10px + var(--safe-bottom));border-top:1px solid var(--line);background:var(--surface)}
+.chat-input .field{margin-bottom:0;border-radius:22px}
+.day-sep{align-self:center;font-size:11px;color:var(--muted);background:var(--surface2);padding:4px 12px;border-radius:12px;margin:6px 0}
+
+/* empty state */
+.empty{text-align:center;color:var(--muted);padding:44px 20px}
+.empty .ico{font-size:42px;margin-bottom:10px}
+.empty .msg{font-size:14px}
+
+/* auth screens */
+.auth{min-height:100vh;min-height:100dvh;display:flex;flex-direction:column;justify-content:center;
+  padding:24px;padding-top:calc(24px + var(--safe-top));
+  background:radial-gradient(900px 460px at 50% -10%,#f3ede1,transparent),var(--bg)}
+.auth .logo-wrap{text-align:center;margin-bottom:22px}
+.auth .logo-wrap img{height:72px}
+.auth .logo-wrap .tag{letter-spacing:2px;font-size:12px;color:var(--muted);font-weight:600;margin-top:12px}
+.auth-card{background:var(--surface);border:1px solid var(--line);border-radius:22px;padding:24px;box-shadow:var(--shadow-lg)}
+.auth-card h2{font-size:20px;margin-bottom:4px}
+.auth-card .sub{color:var(--muted);font-size:13.5px;margin-bottom:18px}
+.gbtn{width:100%;background:#fff;border:1px solid var(--line);border-radius:12px;padding:12px;font-size:15px;
+  font-weight:600;color:#3c4043;display:flex;align-items:center;justify-content:center;gap:10px;cursor:pointer}
+.gbtn img,.gbtn svg{width:19px;height:19px}
+.divider{display:flex;align-items:center;gap:12px;margin:16px 0;color:var(--muted);font-size:12px}
+.divider::before,.divider::after{content:"";flex:1;height:1px;background:var(--line)}
+.switch-line{text-align:center;margin-top:16px;font-size:13.5px;color:var(--muted)}
+
+/* profile */
+.profile-head{display:flex;flex-direction:column;align-items:center;text-align:center;gap:10px;padding:8px 0 4px}
+.profile-head .pn{font-size:21px;font-weight:700}
+.avatar-edit{position:relative;cursor:pointer}
+.avatar-edit .cam{position:absolute;right:-2px;bottom:-2px;width:32px;height:32px;border-radius:50%;
+  background:var(--accent);color:#fff;display:flex;align-items:center;justify-content:center;font-size:15px;border:3px solid var(--surface)}
+.stat-row{display:flex;gap:10px;margin:14px 0}
+.stat{flex:1;background:var(--surface);border:1px solid var(--line);border-radius:var(--radius-sm);padding:12px;text-align:center;box-shadow:var(--shadow)}
+.stat .v{font-size:20px;font-weight:700}
+.stat .l{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.4px;margin-top:2px}
+
+/* event card */
+.event-card{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow);margin-bottom:14px}
+.event-card .banner{height:120px;background:linear-gradient(135deg,var(--accent),var(--brand));display:flex;align-items:flex-end;padding:12px;color:#fff}
+.event-card .banner img{position:absolute}
+.event-card .ebody{padding:14px}
+.event-card .edate{font-size:12px;color:var(--accent);font-weight:700;text-transform:uppercase;letter-spacing:.4px}
+.event-card .etitle{font-size:17px;font-weight:700;margin:3px 0 6px}
+.event-card .edesc{font-size:13.5px;color:var(--muted);line-height:1.45}
+.event-card .efoot{display:flex;justify-content:space-between;align-items:center;margin-top:12px}
+
+/* modal (matches POS: closes only via ✕ / Cancel) */
+.modal-backdrop{position:fixed;inset:0;background:rgba(58,43,32,.45);display:flex;align-items:flex-end;justify-content:center;z-index:100}
+.modal{background:var(--surface);border-radius:20px 20px 0 0;padding:22px 20px calc(22px + var(--safe-bottom));width:100%;max-width:520px;
+  max-height:92vh;overflow:auto;box-shadow:var(--shadow-lg);position:relative;animation:slideup .22s ease}
+@keyframes slideup{from{transform:translateY(30px);opacity:.6}to{transform:translateY(0);opacity:1}}
+@media(min-width:560px){.modal-backdrop{align-items:center}.modal{border-radius:20px}}
+.modal h3{margin-bottom:14px;padding-right:26px}
+.modal-x{position:absolute;top:14px;right:14px;background:none;border:none;font-size:24px;line-height:1;color:var(--muted);cursor:pointer}
+.modal .grab{width:40px;height:4px;background:var(--line);border-radius:3px;margin:-8px auto 14px}
+.modal-actions{display:flex;gap:10px;margin-top:18px}
+.modal-actions .btn{flex:1}
+
+/* toast + loading (from POS) */
+.toast{position:fixed;bottom:calc(var(--bar-h) + var(--safe-bottom) + 16px);left:50%;transform:translateX(-50%) translateY(120px);
+  background:var(--text);color:#faf6ee;padding:12px 22px;border-radius:12px;transition:.3s;z-index:200;max-width:88vw;text-align:center;font-size:14px;box-shadow:var(--shadow-lg)}
+.toast.show{transform:translateX(-50%) translateY(0)}
+.loading-overlay{position:fixed;inset:0;background:rgba(233,227,214,.6);backdrop-filter:blur(2px);
+  display:none;flex-direction:column;align-items:center;justify-content:center;gap:14px;z-index:300}
+.loading-overlay.show{display:flex}
+.spinner{width:44px;height:44px;border-radius:50%;border:4px solid var(--accent-soft);border-top-color:var(--brand);animation:spin .8s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.skeleton{background:linear-gradient(90deg,var(--surface2) 25%,#eae2d2 50%,var(--surface2) 75%);background-size:200% 100%;animation:sk 1.2s infinite;border-radius:10px}
+@keyframes sk{to{background-position:-200% 0}}
+
+/* ---- store credits: wallet header + ledger -------------------------------------------------
+   The balance is the thing you open this screen for, so it gets a card of its own rather than a
+   number sitting inside a generic panel. The ledger below reads as a statement: day headings, a
+   coloured direction dot, and the amount right-aligned so the column scans vertically. */
+.wallet{position:relative;overflow:hidden;border-radius:var(--radius);padding:22px 20px 20px;margin-bottom:14px;
+  background:linear-gradient(135deg,var(--brand) 0%,var(--brand-2) 55%,#7d5a40 100%);
+  box-shadow:var(--shadow-lg);color:#f6efe2;text-align:center}
+.wallet::after{content:'';position:absolute;right:-42px;top:-42px;width:140px;height:140px;border-radius:50%;
+  background:rgba(255,255,255,.07)}
+.wallet-label{font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;opacity:.72}
+.wallet-bal{font-size:40px;font-weight:800;letter-spacing:-1px;line-height:1.1;margin-top:5px;position:relative}
+.wallet-sub{font-size:12.5px;opacity:.78;margin-top:7px;line-height:1.45;position:relative}
+.led-day{font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.7px;
+  margin:16px 2px 7px}
+.led-day:first-child{margin-top:2px}
+.led{display:flex;align-items:center;gap:12px;background:var(--surface);border:1px solid var(--line);
+  border-radius:var(--radius-sm);padding:12px 14px;margin-bottom:8px}
+.led-ic{flex:none;width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;
+  font-size:15px;font-weight:800}
+.led-ic.up{background:#dceadb;color:var(--green)}
+.led-ic.down{background:var(--accent-soft);color:var(--brand)}
+.led-mid{flex:1;min-width:0}
+.led-t{font-weight:600;font-size:14px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.led-s{font-size:12px;color:var(--muted);margin-top:2px}
+.led-amt{font-weight:800;font-size:15px;white-space:nowrap}
+.led-amt.up{color:var(--green)}
+
+/* pull spacing helper */
+.mt8{margin-top:8px}.mt16{margin-top:16px}.mb8{margin-bottom:8px}
+
+/* ---------------------------------------------------------------- pull to refresh
+   Sits above the appbar, translated down from off-screen by the drag. Fixed rather than
+   in-flow so it never reflows the page it is being dragged over. */
+#ptr{
+  position:fixed;top:calc(var(--safe-top, 0px) + 4px);left:50%;
+  transform:translateX(-50%) translateY(0);
+  opacity:0;pointer-events:none;z-index:60;
+}
+#ptr .ptr-ring{
+  width:34px;height:34px;border-radius:50%;
+  background:var(--surface);border:1px solid var(--line);
+  box-shadow:0 2px 10px rgba(0,0,0,.14);
+  display:flex;align-items:center;justify-content:center;
+  font-size:17px;color:var(--brand);
+  transition:transform .18s ease,background .18s ease;
+}
+/* Past the trigger point: the ring turns and fills, so you can feel where the threshold is
+   without having to read anything. */
+#ptr.ready .ptr-ring{transform:rotate(180deg);background:var(--accent);color:#fff;border-color:var(--accent)}
+#ptr.spin .ptr-ring{animation:ptr-spin .7s linear infinite;background:var(--accent);color:#fff;border-color:var(--accent)}
+@keyframes ptr-spin{to{transform:rotate(360deg)}}
+@media (prefers-reduced-motion:reduce){
+  #ptr .ptr-ring{transition:none}
+  #ptr.spin .ptr-ring{animation-duration:1.6s}
+}

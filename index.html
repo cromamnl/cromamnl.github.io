@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover"/>
+<meta name="theme-color" content="#5b3f2c"/>
+<meta name="apple-mobile-web-app-capable" content="yes"/>
+<meta name="apple-mobile-web-app-status-bar-style" content="default"/>
+<title>Croma MNL Community</title>
+<link rel="stylesheet" href="css/theme.css?v=1785764287"/>
+<link rel="manifest" href="manifest.webmanifest?v=1785764287"/>
+<link rel="apple-touch-icon" href="assets/apple-touch-icon.png?v=1785764287"/>
+<link rel="icon" type="image/svg+xml" href="assets/favicon.svg?v=1785764287"/>
+<link rel="icon" type="image/png" href="assets/icon-192.png?v=1785764287"/>
+</head>
+<body>
+<div id="app">
+  <!-- Auth (login / register / onboarding) — rendered by views/auth.js -->
+  <section id="authScreen" class="screen"></section>
+
+  <!-- Main shell — appbar + view body + bottom tab nav -->
+  <section id="mainScreen" class="screen">
+    <header id="appbar" class="appbar"></header>
+    <main id="viewBody" class="body"></main>
+    <nav id="tabbar" class="tabbar"></nav>
+  </section>
+
+  <!-- shared overlays -->
+  <div id="modalRoot"></div>
+  <div id="toast" class="toast"></div>
+  <div id="loadingOverlay" class="loading-overlay"><div class="spinner"></div><div class="loading-text muted">Loading&hellip;</div></div>
+</div>
+
+<!-- Google Identity Services (web Google Sign-In). On native, the app swaps this
+     for the Capacitor GoogleAuth plugin — see README "Google Sign-In on native". -->
+<script src="https://accounts.google.com/gsi/client" async defer></script>
+<!-- QR generator for advanced orders (pure JS, exposes window.qrcode). -->
+<script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.js"></script>
+
+<!-- config + brand mark + core, then feature views, then boot. Plain scripts (no bundler). -->
+<script src="js/config.js?v=1785764287"></script>
+<script src="assets/logo.js?v=1785764287"></script>
+<script src="js/demo.js?v=1785764287"></script>
+<script src="js/core.js?v=1785764287"></script>
+<script src="js/views/auth.js?v=1785764287"></script>
+<script src="js/views/home.js?v=1785764287"></script>
+<script src="js/views/menu.js?v=1785764287"></script>
+<script src="js/views/events.js?v=1785764287"></script>
+<script src="js/views/reserve.js?v=1785764287"></script>
+<script src="js/views/community.js?v=1785764287"></script>
+<script src="js/views/chat.js?v=1785764287"></script>
+<script src="js/views/inquiries.js?v=1785764287"></script>
+<script src="js/views/history.js?v=1785764287"></script>
+<script src="js/views/rewards.js?v=1785764287"></script>
+<script src="js/views/order.js?v=1785764287"></script>
+<script src="js/views/admin.js?v=1785764287"></script>
+<script src="js/views/profile.js?v=1785764287"></script>
+<script src="js/app.js?v=1785764287"></script>
+</body>
+</html>
